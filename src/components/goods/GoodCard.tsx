@@ -7,6 +7,8 @@ import {
   CardActions,
   Drawer,
   IconButton,
+  Menu,
+  MenuItem,
   Modal,
   TextField,
   Tooltip,
@@ -15,24 +17,28 @@ import {
   Close,
   Delete,
   Edit,
+  ExpandMore,
   Paid,
   PriceCheck,
   ShoppingCart,
 } from "@mui/icons-material";
-import { ProductList, buyProduct } from "../../share/type";
 import {
   buyProductsApi,
   deleteProductsApi,
   editProductsApi,
 } from "../../features/actionProductSlice";
+import {
+  fetchProductsApi,
+  fetchSortProductsApi,
+} from "../../features/productSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardItem from "./CardItem";
 import CardMedia from "@mui/material/CardMedia";
+import { ProductList } from "../../share/type";
 import Typography from "@mui/material/Typography";
-import { fetchProductsApi } from "../../features/productSlice";
 import { makeStyles } from "@mui/styles";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
@@ -179,24 +185,95 @@ const GoodCard = () => {
       toast.success("Mua hàng thành công đơn hàng sẽ sớm được giao đến bạn");
     }
   };
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+  const [sort, setSort] = React.useState("Phù hợp nhất");
 
   return (
     <>
       <Box
         sx={{
-          position: "fixed",
-          right: 0,
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        <Button
-          onClick={() => {
-            setOpenSp(true);
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          <Badge badgeContent={getTotalItem(listProducts)} color="error">
-            <ShoppingCart />
-          </Badge>
-        </Button>
+          <Typography variant="body2" component="h2">
+            Sắp xếp theo:
+          </Typography>
+          <Button
+            id="basic-button"
+            aria-controls={openMenu ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={openMenu ? "true" : undefined}
+            onClick={handleClick}
+            endIcon={<ExpandMore />}
+          >
+            {sort}
+          </Button>
+          <Menu
+            anchorEl={anchorEl}
+            open={openMenu}
+            onClose={handleCloseMenu}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem
+              onClick={() => {
+                handleCloseMenu();
+                setSort("Phù hợp nhất");
+              }}
+            >
+              Phù hợp nhất
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleCloseMenu();
+                setSort("Giá từ thấp đến cao");
+                dispatch(fetchSortProductsApi("desc"));
+              }}
+            >
+              Giá từ thấp đến cao
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleCloseMenu();
+                setSort("Giá từ cao đến thấp");
+                dispatch(fetchSortProductsApi("asc"));
+              }}
+            >
+              Giá từ cao đến thấp
+            </MenuItem>
+          </Menu>
+        </Box>
+        <Box
+          sx={{
+            position: "fixed",
+            right: 0,
+          }}
+        >
+          <Button
+            onClick={() => {
+              setOpenSp(true);
+            }}
+          >
+            <Badge badgeContent={getTotalItem(listProducts)} color="error">
+              <ShoppingCart />
+            </Badge>
+          </Button>
+        </Box>
       </Box>
       <Drawer
         sx={{

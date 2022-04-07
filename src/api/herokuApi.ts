@@ -60,4 +60,7 @@ export const herokuApi = {
       totalMoney,
     });
   },
+  sortProducts(desOrAsc: string) {
+    return Axios.get(`products/?_sort=price&_order=${desOrAsc}`);
+  },
 };

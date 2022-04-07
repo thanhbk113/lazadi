@@ -14,15 +14,23 @@ const initialState: InitialState = {
 };
 
 export const fetchProductsApiFitler = createAsyncThunk(
-  "products/fetchproductsApiFitler",
+  "products/fetchProductsApiFitler",
   async (nameCategory: string, thunkApi) => {
     const response = await herokuApi.getProductFitler(nameCategory);
     return response.data;
   }
 );
 
-export const fetchProductsApi = createAsyncThunk(
+export const fetchSortProductsApi = createAsyncThunk(
   "products/fetchProductsApi",
+  async (desOrAs: string, thunkAPI) => {
+    const response = await herokuApi.sortProducts(desOrAs);
+    return response.data;
+  }
+);
+
+export const fetchProductsApi = createAsyncThunk(
+  "products/fetchSortProductsApi",
   async (thunkAPI) => {
     const response = await herokuApi.getProduct();
     return response.data;
@@ -46,6 +54,13 @@ const productSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(fetchProductsApiFitler.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchSortProductsApi.fulfilled, (state, action) => {
+      state.products = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(fetchSortProductsApi.pending, (state, action) => {
       state.loading = true;
     });
   },
