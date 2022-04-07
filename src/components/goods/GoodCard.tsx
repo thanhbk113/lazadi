@@ -234,6 +234,7 @@ const GoodCard = () => {
               onClick={() => {
                 handleCloseMenu();
                 setSort("Phù hợp nhất");
+                dispatch(fetchProductsApi());
               }}
             >
               Phù hợp nhất
@@ -278,7 +279,10 @@ const GoodCard = () => {
       <Drawer
         sx={{
           "& .MuiDrawer-paper": {
-            width: 500,
+            width: {
+              xs: "100%",
+              sm: 500,
+            },
             boxSizing: "border-box",
           },
         }}
@@ -286,6 +290,19 @@ const GoodCard = () => {
         onClose={handleCloseSp}
         open={openSp}
       >
+        <Box
+          sx={{
+            display: {
+              xs: "flex",
+              md: "none",
+            },
+            justifyContent: "flex-end",
+          }}
+        >
+          <IconButton onClick={handleCloseSp}>
+            <Close />
+          </IconButton>
+        </Box>
         <Typography variant="h4" component="body">
           Your cart
         </Typography>
