@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, InputBase, Stack, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 
 import { GoogleOutlined } from "@ant-design/icons";
@@ -40,7 +40,7 @@ const Login = () => {
       <Box
         sx={{
           width: 300,
-          height: 300,
+          height: 400,
           margin: "20px auto 20px auto",
           backgroundColor: "greenyellow",
           display: "flex",

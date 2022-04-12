@@ -243,7 +243,7 @@ const GoodCard = () => {
               onClick={() => {
                 handleCloseMenu();
                 setSort("Giá từ thấp đến cao");
-                dispatch(fetchSortProductsApi("desc"));
+                dispatch(fetchSortProductsApi("asc"));
               }}
             >
               Giá từ thấp đến cao
@@ -252,7 +252,7 @@ const GoodCard = () => {
               onClick={() => {
                 handleCloseMenu();
                 setSort("Giá từ cao đến thấp");
-                dispatch(fetchSortProductsApi("asc"));
+                dispatch(fetchSortProductsApi("desc"));
               }}
             >
               Giá từ cao đến thấp
